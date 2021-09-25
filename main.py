@@ -93,7 +93,7 @@ def get_args_parser():
     parser.add_argument('--start_epoch', default=0, type=int, metavar='N',
                         help='start epoch')
     parser.add_argument('--eval', action='store_true')
-    parser.add_argument('--num_workers', default=2, type=int)
+    parser.add_argument('--num_workers', default=4, type=int)
 
     # distributed training parameters
     parser.add_argument('--world_size', default=1, type=int,
@@ -176,10 +176,12 @@ def main(args):
         else:
             checkpoint = torch.load(args.resume, map_location='cpu')
 
-
-        del checkpoint["model"][f"class_embed.weight"]
-        del checkpoint["model"][f"class_embed.bias"]
+        del checkpoint["model"]["class_embed.weight"]
+        del checkpoint["model"]["class_embed.bias"]
         del checkpoint["model"]["query_embed.weight"]
+
+        # checkpoint["model"]["class_embed.weight"].resize_(1 + 1, 256)
+        # checkpoint["model"]["class_embed.bias"].resize_(1 + 1)
 
         model_without_ddp.load_state_dict(checkpoint['model'], strict=False)
         if not args.eval and 'optimizer' in checkpoint and 'lr_scheduler' in checkpoint and 'epoch' in checkpoint:
