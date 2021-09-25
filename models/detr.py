@@ -319,7 +319,7 @@ def build(args):
         # max_obj_id + 1, but the exact value doesn't really matter
         num_classes = 250
 
-    num_classes = 2
+    num_classes = 1
 
     device = torch.device(args.device)
 
