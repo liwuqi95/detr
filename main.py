@@ -176,14 +176,14 @@ def main(args):
         else:
             checkpoint = torch.load(args.resume, map_location='cpu')
 
-        del checkpoint["model"]["class_embed.weight"]
-        del checkpoint["model"]["class_embed.bias"]
-        del checkpoint["model"]["query_embed.weight"]
+        # del checkpoint["model"]["class_embed.weight"]
+        # del checkpoint["model"]["class_embed.bias"]
+        # del checkpoint["model"]["query_embed.weight"]
 
-        # checkpoint["model"]["class_embed.weight"].resize_(1 + 1, 256)
-        # checkpoint["model"]["class_embed.bias"].resize_(1 + 1)
+        checkpoint["model"]["class_embed.weight"].resize_(1 + 1, 256)
+        checkpoint["model"]["class_embed.bias"].resize_(1 + 1)
 
-        model_without_ddp.load_state_dict(checkpoint['model'], strict=False)
+        model_without_ddp.load_state_dict(checkpoint['model'])
         if not args.eval and 'optimizer' in checkpoint and 'lr_scheduler' in checkpoint and 'epoch' in checkpoint:
             optimizer.load_state_dict(checkpoint['optimizer'])
             lr_scheduler.load_state_dict(checkpoint['lr_scheduler'])
