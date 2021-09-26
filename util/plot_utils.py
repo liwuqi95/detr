@@ -105,3 +105,8 @@ def plot_precision_recall(files, naming_scheme='iter'):
     axs[1].set_title('Scores / Recall')
     axs[1].legend(names)
     return fig, axs
+
+
+if __name__ == '__main__':
+    log_path = PurePath('./outputs_0/log.txt')
+    plot_logs(log_path)
