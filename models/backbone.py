@@ -82,6 +82,7 @@ class BackboneBase(nn.Module):
 
 class Backbone(BackboneBase):
     """ResNet backbone with frozen BatchNorm."""
+
     def __init__(self, name: str,
                  train_backbone: bool,
                  return_interm_layers: bool,
@@ -89,6 +90,19 @@ class Backbone(BackboneBase):
         backbone = getattr(torchvision.models, name)(
             replace_stride_with_dilation=[False, False, dilation],
             pretrained=is_main_process(), norm_layer=FrozenBatchNorm2d)
+
+        if is_main_process():
+            assert name == 'resnet50'
+            # state_dict = torch.hub.load_state_dict_from_url(
+            #     url="https://dl.fbaipublicfiles.com/deepcluster/swav_800ep_pretrain.pth.tar",
+            #     map_location="cpu",
+            # )
+            state_dict = torch.load('./checkpoint.pth.tar')
+            # optionnaly cleans "module."
+            state_dict = {k.replace("module.", ""): v for k, v in state_dict.items()}
+            # load weights: you can check that the model loads correctly with `print(msg)`
+            msg = backbone.load_state_dict(state_dict, strict=False)
+
         num_channels = 512 if name in ('resnet18', 'resnet34') else 2048
         super().__init__(backbone, train_backbone, num_channels, return_interm_layers)
 
