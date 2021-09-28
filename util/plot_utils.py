@@ -17,7 +17,7 @@ def plot_logs(logs, fields=('class_error', 'loss_bbox_unscaled', 'mAP'), ewm_col
     :: Inputs - logs = list containing Path objects, each pointing to individual dir with a log file
               - fields = which results to plot from each log file - plots both training and test for each field.
               - ewm_col = optional, which column to use as the exponential weighted smoothing of the plots
-              - log_name = optional, name of log file if different than default 'log.txt'.
+              - log_name = optional, name of log file if different than default '0.txt'.
 
     :: Outputs - matplotlib plots of results in fields, color coded for each log file.
                - solid lines are training results, dashed lines are test results.
@@ -108,5 +108,6 @@ def plot_precision_recall(files, naming_scheme='iter'):
 
 
 if __name__ == '__main__':
-    log_path = PurePath('./outputs_0/log.txt')
-    plot_logs(log_path)
+    log_path = Path('../')
+    plot_logs(log_path, log_name='log_25935349.txt')
+    plt.savefig(f'full_figure.png')
