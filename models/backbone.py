@@ -89,7 +89,7 @@ class Backbone(BackboneBase):
                  dilation: bool):
         backbone = getattr(torchvision.models, name)(
             replace_stride_with_dilation=[False, False, dilation],
-            pretrained=is_main_process(), norm_layer=FrozenBatchNorm2d)
+            pretrained=False, norm_layer=FrozenBatchNorm2d)
 
         if is_main_process():
             assert name == 'resnet50'
