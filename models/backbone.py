@@ -103,6 +103,7 @@ class Backbone(BackboneBase):
             state_dict = {k.replace("module.", ""): v for k, v in state_dict.items()}
             # load weights: you can check that the model loads correctly with `print(msg)`
             msg = backbone.load_state_dict(state_dict, strict=False)
+            print(msg)
             print('Loaded Resnet-50 Backbone from checkpoint.')
 
         num_channels = 512 if name in ('resnet18', 'resnet34') else 2048
