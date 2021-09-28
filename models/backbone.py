@@ -98,7 +98,8 @@ class Backbone(BackboneBase):
             #     map_location="cpu",
             # )
             state_dict = torch.load('./checkpoint.pth.tar')
-            # optionnaly cleans "module."
+            if "state_dict" in state_dict:
+                state_dict = state_dict["state_dict"]
             state_dict = {k.replace("module.", ""): v for k, v in state_dict.items()}
             # load weights: you can check that the model loads correctly with `print(msg)`
             msg = backbone.load_state_dict(state_dict, strict=False)
