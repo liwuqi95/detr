@@ -1,2 +1,2 @@
-FOLDER_COUNT=ls -l ./outputs | grep -c ^d
+FOLDER_COUNT=$(ls -l ./outputs | grep -c ^d)
 python -m torch.distributed.launch --nproc_per_node=2 --use_env main.py --epochs 150 --batch_size 4 --resume ./detr-r50-e632da11.pth --coco_path ../coco_10 --output_dir ./outputs/$FOLDER_COUNT
